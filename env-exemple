@@ -1,0 +1,9 @@
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME='root'
+DB_PASS=P@ssw0rd
+DB_NAME='management'
+
+PORT=3334
+
+

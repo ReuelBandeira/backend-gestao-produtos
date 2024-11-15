@@ -1,0 +1,17 @@
+# Ignorar node_modules e arquivos de sistema
+node_modules
+.DS_Store
+
+# Ignorar db-docker e arquivos de variáveis de ambiente
+db-docker
+.env
+
+# Ignorar tmp e arquivos temporários
+tmp/*
+!tmp/.gitkeep
+!tmp/uploads/
+!tmp/uploads/**
+
+# Garantir que src/uploads não seja ignorado
+!src/uploads/
+!src/uploads/**

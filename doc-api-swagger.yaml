@@ -1,0 +1,496 @@
+swagger: '2.0'
+info:
+  description: 'Este é documentação de end-point REST Full do projeto Gestão de Produtos'
+  version: '1.0.0'
+  title: 'Gestão de Produtos'
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: 'apiteam@swagger.io'
+  license:
+    name: 'MIT'
+    url: 'https://opensource.org/licenses/MIT'
+host: 'localhost:3334'
+
+#basePath: ""
+
+tags:
+  - name: 'sessions'
+    description: 'System access'
+  - name: 'user'
+    description: 'CRUD de usuários do sistema'
+  - name: 'category'
+    description: 'CRUD de categorias do Produtos'
+  - name: 'products'
+    description: 'CRUD de Produtos'
+schemes:
+  - 'http'
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: >-
+      Colocar descrição da autorização (ex:IREDES {token} ).
+paths:
+  /sessions:
+    post:
+      tags:
+        - 'sessions'
+      summary: 'Authenticate'
+      description: ''
+      operationId: 'authentication'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Created Lines object'
+          required: true
+          schema:
+            $ref: '#/definitions/Sessions'
+      responses:
+        '201':
+          description: 'created'
+  /employee:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'Create user'
+      description: 'It can only be done with a logged in user'
+      operationId: 'createUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Created user object'
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: 'created'
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'List Users'
+      description: 'List of users registered in the system'
+      operationId: 'listUserAll'
+      produces:
+        - 'application/json'
+      parameters: []
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /employee/search:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'List Users'
+      description: 'Search of users registered in the system'
+      operationId: 'listUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'name'
+          in: 'query'
+          description: 'Search user'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /employee/{username}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'Update user'
+      description: 'It can only be done with a logged in user'
+      operationId: 'updateUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'username'
+          in: 'path'
+          description: 'Name that need to be updated'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'Updated user object'
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: 'Created'
+        '400':
+          description: 'Bad Request'
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'Delete user'
+      description: 'It can only be done with a logged in user'
+      operationId: 'deleteUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'username'
+          in: 'path'
+          description: 'The name that needs to be deleted'
+          required: true
+          type: 'string'
+      responses:
+        '204':
+          description: 'No content'
+        '404':
+          description: 'User not found'
+  /categorys:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - 'category'
+      summary: 'Create category'
+      description: 'criar categoria de produtos'
+      operationId: 'createCategory'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Created Category object'
+          required: true
+          schema:
+            $ref: '#/definitions/Category'
+      responses:
+        '201':
+          description: 'created'
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'category'
+      summary: 'List Category'
+      description: 'List of Category registered in the system'
+      operationId: 'listCategoryAll'
+      produces:
+        - 'application/json'
+      parameters: []
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /categorys/{id}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - 'category'
+      summary: 'Updated category'
+      description: 'Update in category'
+      operationId: 'updateCategory'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id that need to be updated'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'Updated work group object'
+          required: true
+          schema:
+            $ref: '#/definitions/Category'
+      responses:
+        '201':
+          description: 'Created'
+        '400':
+          description: 'Bad Request'
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - 'category'
+      summary: 'Delete category'
+      description: 'Delete in Category'
+      operationId: 'deleteCategorys'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'The id that needs to be deleted'
+          required: true
+          type: 'string'
+      responses:
+        '204':
+          description: 'No content'
+        '404':
+          description: 'User not found'
+  /categorys/search:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'category'
+      summary: 'List Categorys'
+      description: 'Search of Categorys registered in the system'
+      operationId: 'listCategory'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'name'
+          in: 'query'
+          description: 'Search user'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /products:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - 'products'
+      summary: 'Create product'
+      description: 'Endpoint to create a product with image upload'
+      operationId: 'createProduct'
+      consumes:
+        - multipart/form-data
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'formData'
+          name: 'name'
+          type: 'string'
+          description: 'Name of the product'
+          required: true
+        - in: 'formData'
+          name: 'description'
+          type: 'string'
+          description: 'Description of the product'
+          required: true
+        - in: 'formData'
+          name: 'price'
+          type: 'string'
+          description: 'Price of the product'
+          required: true
+        - in: 'formData'
+          name: 'expirationDate'
+          type: 'string'
+          description: 'Expiration date of the product'
+          required: true
+        - in: 'formData'
+          name: 'image'
+          type: 'file'
+          description: 'Image of the product'
+          required: true
+        - in: 'formData'
+          name: 'categoryId'
+          type: 'string'
+          description: 'Category ID of the product'
+          required: true
+      responses:
+        '201':
+          description: 'Created'
+        '400':
+          description: 'Bad Request'
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'products'
+      summary: 'List Products'
+      description: 'List of products registered in the system'
+      operationId: 'listProductsAll'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'page'
+          in: 'query'
+          description: 'list products paginations'
+          required: true
+          type: 'number'
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /products/search:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'products'
+      summary: 'List Products'
+      description: 'Search for products registered in the system'
+      operationId: 'listProducts'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'name'
+          in: 'query'
+          description: 'Search for product by name'
+          required: false
+          type: 'string'
+        - name: 'description'
+          in: 'query'
+          description: 'Search for product by description'
+          required: false
+          type: 'string'
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /products/{id}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - 'products'
+      summary: 'Update product'
+      description: 'Update a product in the system'
+      operationId: 'updateProduct'
+      consumes:
+        - multipart/form-data
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'id'
+          type: 'string'
+          description: 'ID of the product to be updated'
+          required: true
+        - in: 'formData'
+          name: 'name'
+          type: 'string'
+          description: 'Name of the product'
+          required: true
+        - in: 'formData'
+          name: 'description'
+          type: 'string'
+          description: 'Description of the product'
+          required: true
+        - in: 'formData'
+          name: 'price'
+          type: 'string'
+          description: 'Price of the product'
+          required: true
+        - in: 'formData'
+          name: 'expirationDate'
+          type: 'string'
+          description: 'Expiration date of the product'
+          required: true
+        - in: 'formData'
+          name: 'image'
+          type: 'file'
+          description: 'Image of the product'
+          required: false
+        - in: 'formData'
+          name: 'categoryId'
+          type: 'string'
+          description: 'Category ID of the product'
+          required: true
+      responses:
+        '201':
+          description: 'Product updated'
+        '400':
+          description: 'Bad Request'
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - 'products'
+      summary: 'Delete products'
+      description: 'Delete in Products'
+      operationId: 'deleteProducts'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'The id that needs to be deleted'
+          required: true
+          type: 'string'
+      responses:
+        '204':
+          description: 'No content'
+        '404':
+          description: 'User not found'
+definitions:
+  Sessions:
+    type: 'object'
+    properties:
+      username:
+        type: 'string'
+      password:
+        type: 'string'
+    xml:
+      name: 'Sessions'
+  User:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      username:
+        type: 'string'
+      email:
+        type: 'string'
+      password:
+        type: 'string'
+      role:
+        type: 'string'
+      departament:
+        type: 'string'
+    xml:
+      name: 'User'
+  Category:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+    xml:
+      name: 'Category'
+  Products:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      description:
+        type: 'string'
+      price:
+        type: 'string'
+      expirationDate:
+        type: 'string'
+      image:
+        type: 'string'
+      categoryId:
+        type: 'number'
+    xml:
+      name: 'Products'
+externalDocs:
+  description: 'Find out more about Swagger'
+  url: 'http://swagger.io'
