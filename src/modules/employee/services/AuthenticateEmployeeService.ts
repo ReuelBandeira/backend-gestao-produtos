@@ -1,9 +1,7 @@
 import Employee from '@modules/employee/infra/typeorm/entities/Employee';
 import { sign } from 'jsonwebtoken';
-// eslint-disable-next-line import/no-unresolved
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { inject, injectable } from 'tsyringe';
 import IHashProvider from '@modules/employee/providers/HashProvider/models/IHashProvider';
 import IEmployeeRepository from '../repositories/IEmployeeRepository';
@@ -19,13 +17,12 @@ interface IResponse {
 }
 
 @injectable()
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default class AuthenticateEmployeeService {
   constructor(
     @inject('EmployeeRepository')
     private employeesRepository: IEmployeeRepository,
     @inject('HashProvider')
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({ username, password }: IRequest): Promise<IResponse> {
@@ -37,7 +34,7 @@ export default class AuthenticateEmployeeService {
 
     const passwordMatched = await this.hashProvider.compareHash(
       password,
-      employee.password
+      employee.password,
     );
 
     if (!passwordMatched) {

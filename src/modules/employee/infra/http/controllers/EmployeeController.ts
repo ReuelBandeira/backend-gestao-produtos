@@ -10,7 +10,12 @@ import EmployeesRepository from '../../typeorm/repositories/EmployeeRepository';
 
 export default class EmployeesController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, username, email, password, role, departament } = request.body;
+    const { name, username, email, password, role, departament, type_user } =
+      request.body;
+
+    if (type_user === 'ADMINISTRADOR' && email === '') {
+      throw new AppError('Favor preencha o campo de email', 404);
+    }
 
     const createEmployee = container.resolve(CreateEmployeeService);
 
@@ -67,7 +72,12 @@ export default class EmployeesController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { username } = request.params;
-    const { name, email, password, role, departament } = request.body;
+    const { name, email, password, role, departament, type_user } =
+      request.body;
+
+    if (type_user === 'ADMINISTRADOR' && email === '') {
+      throw new AppError('Favor preencha o campo de email', 404);
+    }
 
     const updateEmployee = container.resolve(UpdateEmployeeService);
 
@@ -94,6 +104,32 @@ export default class EmployeesController {
     await deleteEmployee.execute({ username });
 
     return response.status(204).json({});
+  }
+
+  public async indexAllFilter(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    const { page, role, departament } = request.query;
+    const p = typeof page === 'string' ? parseInt(page) : 1;
+    const employeeRepository = new EmployeesRepository();
+
+    const { employees, totalPages, totalEmployees } =
+      await employeeRepository.findAllEmployeesFilter(
+        p,
+        String(role),
+        String(departament)
+      );
+
+    const employeesWithouPassword = employees.map((item) => {
+      return { ...item, password: undefined };
+    });
+
+    return response.json({
+      employees: employeesWithouPassword,
+      totalPages,
+      totalEmployees,
+    });
   }
 
   public async all(request: Request, response: Response): Promise<Response> {

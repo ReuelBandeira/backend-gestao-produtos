@@ -82,4 +82,70 @@ export default class EmployeesRepository implements IEmployeeRepository {
   public async delete(username: string): Promise<void> {
     await this.ormRepository.delete({ username });
   }
+
+  public async findAllEmployeesFilter(
+    page = 1,
+    role: string,
+    departament: string
+  ): Promise<EmployeePagination> {
+    // ? skip = offset, take = limit
+
+    if (role != 'undefined' && departament != 'undefined') {
+      const employees = await this.ormRepository.find({
+        where: { role, departament },
+        order: { id: 'DESC' },
+        skip: (page - 1) * TOTAL_PER_PAGE,
+        take: TOTAL_PER_PAGE,
+      });
+      const totalEmployees = (
+        await this.ormRepository.find({
+          where: { role, departament },
+        })
+      ).length;
+
+      return {
+        employees,
+        totalEmployees,
+        totalPages: totalEmployees / TOTAL_PER_PAGE,
+      };
+    }
+    if (role != 'undefined') {
+      const employees = await this.ormRepository.find({
+        where: { role },
+        order: { id: 'DESC' },
+        skip: (page - 1) * TOTAL_PER_PAGE,
+        take: TOTAL_PER_PAGE,
+      });
+      const totalEmployees = (
+        await this.ormRepository.find({
+          where: { role },
+        })
+      ).length;
+
+      return {
+        employees,
+        totalEmployees,
+        totalPages: totalEmployees / TOTAL_PER_PAGE,
+      };
+    }
+    if (departament != 'undefined') {
+      const employees = await this.ormRepository.find({
+        where: { departament },
+        order: { id: 'DESC' },
+        skip: (page - 1) * TOTAL_PER_PAGE,
+        take: TOTAL_PER_PAGE,
+      });
+      const totalEmployees = (
+        await this.ormRepository.find({
+          where: { departament },
+        })
+      ).length;
+
+      return {
+        employees,
+        totalEmployees,
+        totalPages: totalEmployees / TOTAL_PER_PAGE,
+      };
+    }
+  }
 }

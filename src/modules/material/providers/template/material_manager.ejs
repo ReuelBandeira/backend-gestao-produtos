@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://unpkg.com/tailwindcss/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="<%=server%>/public/JsBarcode.all.min.js"></script>
+
+    <style>
+      body ,
+      table {
+        background-color: #fff;
+      }
+
+      body div,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      /* .table1 {
+        width: 30%;
+      } */
+
+      table {
+        width: 100%;
+      }
+
+      th {
+        text-align: left;
+      }
+      th + th {
+        margin-right: 0.3rem;
+      }
+      div {
+        flex: 1;
+      }
+
+      td,
+      th {
+        text-align: center;
+      }
+
+      .short-cell {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines to show */
+        -webkit-box-orient: vertical;
+      }
+
+
+      .right {
+        display: inline;
+        width: 50%;
+        float: right;
+
+      }
+
+      .left {
+        display: inline;
+          width: 50%;
+          float: left;
+
+      }
+
+      .barcode {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        /* float:right; */
+      }
+
+      .text-3xl {
+        text-align: center;
+        font-size: 3rem;
+      }
+
+      body {
+        margin-left: 2px;
+        margin-right: 2px;
+        margin-top: 10px;
+      }
+
+      header {
+        padding: 1.2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: black;
+        color: white;
+      }
+
+      .img-logo svg {
+        width: 50%;
+        height: 50%;
+      }
+
+      .info-hd,
+      .info-hd div {
+        display: flex;
+        align-items: center;
+      }
+      .info-hd h1 {
+        margin-right: 1rem;
+      }
+
+      .info-hd div {
+        padding: 0.5rem;
+        background-color: white;
+        color: black;
+      }
+
+      .td {
+        border-bottom: 1px solid black;
+      }
+
+      .page {
+      width: 21cm;
+      min-height: 20.7cm;
+      padding: 2cm;
+      margin: 1cm auto;
+
+
+      }
+
+      @page {
+      size: A4;
+      margin: 0;
+      }
+
+
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+      }
+
+      #content {
+        flex: 1;
+        padding: 20px;
+      }
+    </style>
+
+    <title>Relatório</title>
+  </head>
+  <body>
+    <% if (material.findListCode?.length > 0) { %> <% const {list_code, version,
+    created_at} = material.findListCode[0]; const dateCreate = new
+    Date(Date.parse(created_at)).toLocaleDateString('pt-br') %>
+    <div>
+      <header>
+        <div class="img-logo">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="329.501"
+            height="36.441"
+            viewBox="0 0 329.501 36.441"
+          >
+            <defs>
+              <style>
+                .a {
+                  fill: #fff;
+                }
+              </style>
+            </defs>
+            <g transform="translate(-588.114 -166.392)">
+              <path
+                class="a"
+                d="M652.087,166.74h-3.993a1.573,1.573,0,0,0-1.595,1.547V187.9c0,5.771-3.657,7.65-9.076,7.65H635.98c-5.347,0-9.065-1.954-9.065-7.65V168.287a1.571,1.571,0,0,0-1.587-1.547h-4.012a1.58,1.58,0,0,0-1.644,1.547v19.79c0,9.308,5.542,14.226,16.027,14.226h1.994c10.491,0,16.036-4.918,16.036-14.226v-19.79A1.578,1.578,0,0,0,652.087,166.74Z"
+                transform="translate(16.93 0.187)"
+              />
+              <path
+                class="a"
+                d="M690.916,166.737H658.047a1.538,1.538,0,0,0-1.579,1.569v3.31a1.536,1.536,0,0,0,1.579,1.559h12.968v27.853a1.552,1.552,0,0,0,1.59,1.509h3.943a1.556,1.556,0,0,0,1.595-1.509V173.175h12.773a1.543,1.543,0,0,0,1.593-1.559v-3.31A1.545,1.545,0,0,0,690.916,166.737Z"
+                transform="translate(36.67 0.185)"
+              />
+              <path
+                class="a"
+                d="M688.811,166.392H685a1.572,1.572,0,0,0-1.592,1.583V201.1A1.561,1.561,0,0,0,685,202.63h3.809a1.635,1.635,0,0,0,1.652-1.581V167.975A1.6,1.6,0,0,0,688.811,166.392Z"
+                transform="translate(51.124 0)"
+              />
+              <path
+                class="a"
+                d="M753.1,181.218c-5.507-1.245-9.294-1.5-9.294-4.831,0-1.9.065-4.035,5.216-4.035h7.238c3.723,0,5.737,1.477,5.756,3.357.02,1.521,1.351,1.695,2.5,1.695h2.844c.828,0,1.621-.5,1.621-2.5,0-3.7-3.131-6.383-6.963-7.65a16.429,16.429,0,0,0-5.043-.811h-6.112c-12.782,0-14.421,5.485-14.421,10.261,0,7.748,8.489,8.869,15.69,10.511,5.527,1.26,9.886,2.254,9.886,5.584,0,1.5-.659,3.42-5.081,3.42h-8.425c-5.038,0-5.919-.373-6.16-2.692a1.985,1.985,0,0,0-2.208-1.984h-2.864c-.018,0-1.609.028-1.609,2.025,0,5.264,4.526,8.933,10.205,8.933h9.093c12.788,0,14.423-5.481,14.423-10.25C769.387,184.427,760.322,182.846,753.1,181.218Z"
+                transform="translate(79.158 0.027)"
+              />
+              <path
+                class="a"
+                d="M810.642,172.81h-.27l0,0H799.884c-5.347,0-8.064,1.994-8.064,7.793v20.444a1.583,1.583,0,0,1-1.59,1.573h-3.654a1.593,1.593,0,0,1-1.644-1.573V180.884c0-9.48,4.184-14.483,14.673-14.483h11.032l0,0h0a1.387,1.387,0,0,1,1.384,1.394v3.571A1.4,1.4,0,0,1,810.642,172.81Z"
+                transform="translate(105.588 0.005)"
+              />
+              <path
+                class="a"
+                d="M669.488,196.311H658c-5.481,0-5.668-1.544-5.668-7.755V168.239a1.579,1.579,0,0,0-1.59-1.57H647a1.588,1.588,0,0,0-1.639,1.57v25.4c0,5.943,3.471,9.042,11.743,9.042h12.384a1.385,1.385,0,0,0,1.384-1.386l0-3.549A1.4,1.4,0,0,0,669.488,196.311Z"
+                transform="translate(30.71 0.149)"
+              />
+              <path
+                class="a"
+                d="M715.483,196.246h-.278v0H704c-5.488,0-5.673-1.552-5.673-7.805V167.973a1.587,1.587,0,0,0-1.586-1.581H693a1.6,1.6,0,0,0-1.644,1.581v25.585c0,5.985,3.471,9.108,11.743,9.108H715.48l0-.006h0a1.385,1.385,0,0,0,1.384-1.391v-3.578A1.4,1.4,0,0,0,715.483,196.246Z"
+                transform="translate(55.385 0)"
+              />
+              <path
+                class="a"
+                d="M729.627,166.559v-.012h-4.075v.012c-8.523.171-14.248,5.05-14.248,12.068l0,22.456c0,1.5.87,1.5,1.152,1.5h4.276c1.228,0,1.6-.363,1.6-1.56v-9.314h18.3v9.314c0,1.2.376,1.56,1.606,1.56h4.313c.286,0,1.147,0,1.147-1.5V178.627C743.7,171.226,738.155,166.734,729.627,166.559Zm0,18.648H718.486l.011-6.026c0-5.113,3.46-6.461,6.9-6.461h4.379c3.443,0,6.67,2.09,6.67,6.461l.011,6.026Z"
+                transform="translate(66.086 0.083)"
+              />
+              <path
+                class="a"
+                d="M772.033,172.792h19.039a1.643,1.643,0,0,0,1.492-1.682v-3.122a1.519,1.519,0,0,0-1.492-1.544h-22.5c-7.163.018-7.9,6.249-7.9,11.431l-.016,6.438h0v.281h0l.016,6.427c0,5.186.737,11.424,7.9,11.436h22.5a1.519,1.519,0,0,0,1.492-1.546v-3.3a1.642,1.642,0,0,0-1.492-1.676H772.033c-4.977,0-4.388-3.635-4.388-3.635v-4.657h23.007a1.54,1.54,0,0,0,1.492-1.544v-3.1a1.537,1.537,0,0,0-1.492-1.543H767.645v-4.433S767.056,172.792,772.033,172.792Z"
+                transform="translate(92.561 0.027)"
+              />
+              <path
+                class="a"
+                d="M630.257,166.74h-9.248a2.386,2.386,0,0,0-2.583,1.664l-8.649,25.309-8.65-25.309a2.387,2.387,0,0,0-2.586-1.664H589.3a1.237,1.237,0,0,0-1.186,1.281v33.266a1.248,1.248,0,0,0,1.238,1.278h4.485a1.245,1.245,0,0,0,1.24-1.278l0-24.625c-.029-.636.455-.882.733-.286l8.882,23.095a2.134,2.134,0,0,0,2.171,1.5h5.811a2.134,2.134,0,0,0,2.179-1.5l8.885-23.095c.28-.6.764-.35.733.286v24.625a1.248,1.248,0,0,0,1.24,1.278H630.2a1.248,1.248,0,0,0,1.238-1.278V168.021A1.236,1.236,0,0,0,630.257,166.74Z"
+                transform="translate(0 0.187)"
+              />
+            </g>
+            dasd
+          </svg>
+        </div>
+
+        <div class="info-hd">
+          <h1>Listagem de Componentes</h1>
+          <div><%= dateCreate %> | V<%= version %></div>
+        </div>
+      </header>
+
+      <div class="left">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Cód Produto </th>
+              <th>Descrição </th>
+          </thead>
+          <tbody>
+            <tr>
+              <td ><%= material.product.name %> </td>
+              <td ><%= material.product.description %> </td>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="right">
+        <svg
+          class="barcode"
+          jsbarcode-format="code128"
+          jsbarcode-value="<%= list_code %>"
+          jsbarcode-textmargin="0"
+          jsbarcode-fontoptions="bold"
+        >
+          asdasd
+        </svg>
+      </div>
+      <% %>
+      <table style="margin: 2rem auto" >
+        <thead>
+          <tr>
+            <th>Máquina</th>
+            <th>Módulo</th>
+            <th>Lado</th>
+            <th>Posição</th>
+            <th>Componente</th>
+            <th>Alternativo</th>
+            <th>Pitch</th>
+            <th>Quantidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% material.findListCode.forEach(listcode => { %>
+          <tr>
+            <td class="td"><%= listcode.machine %></td>
+            <td class="td"><%= listcode.module %></td>
+            <td class="td"><%= listcode.side %> <%= listcode.tray_module_position == 'F' ? '' : ' - '+listcode.tray_module_position  %></td>
+            <td class="td"><%= listcode.position %></td>
+            <td class="td"><%= listcode.main_components %></td>
+            <td class="td"><%= listcode.alternative_components %></td>
+            <td class="td"><%= listcode.feeder_pitch %></td>
+            <td class="td"><%= listcode.quantity %></td>
+          </tr>
+
+          <% }); %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"><%=material.findListCode.length%> Componentes</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="page" id="content" >
+      </div>
+      <div  >
+
+        <div style=" height:500%; margin-top: 100px;  border:solid 1px;">
+          <div class="left">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Cód Produto </th>
+                  <th>Descrição </th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td ><%= material.product.name %> </td>
+                  <td ><%= material.product.description %> </td>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="right">
+            <svg
+              class="barcode"
+              jsbarcode-format="code128"
+              jsbarcode-value="<%= list_code %>"
+              jsbarcode-textmargin="0"
+              jsbarcode-fontoptions="bold"
+            >
+              asdasd
+            </svg>
+          </div>
+
+        </div>
+
+        <div style=" height:500%; margin-top: 100px;  border:solid 1px;">
+          <div class="left">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Cód Produto </th>
+                  <th>Descrição </th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td ><%= material.product.name %> </td>
+                  <td ><%= material.product.description %> </td>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="right">
+            <svg
+              class="barcode"
+              jsbarcode-format="code128"
+              jsbarcode-value="<%= list_code %>"
+              jsbarcode-textmargin="0"
+              jsbarcode-fontoptions="bold"
+            >
+              asdasd
+            </svg>
+          </div>
+        </div>
+
+        <div style=" height:500%; margin-top: 100px;  border:solid 1px;">
+          <div class="left">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Cód Produto </th>
+                  <th>Descrição </th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td ><%= material.product.name %> </td>
+                  <td ><%= material.product.description %> </td>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="right">
+            <svg
+              class="barcode"
+              jsbarcode-format="code128"
+              jsbarcode-value="<%= list_code %>"
+              jsbarcode-textmargin="0"
+              jsbarcode-fontoptions="bold"
+            >
+              asdasd
+            </svg>
+          </div>
+        </div>
+
+
+        <div style=" height:500%; margin-top: 100px;  border:solid 1px; text-align: end;">
+          <div class="left">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Cód Produto </th>
+                  <th>Descrição </th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td ><%= material.product.name %> </td>
+                  <td ><%= material.product.description %> </td>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="right">
+            <svg
+              class="barcode"
+              jsbarcode-format="code128"
+              jsbarcode-value="<%= list_code %>"
+              jsbarcode-textmargin="0"
+              jsbarcode-fontoptions="bold"
+            >
+              asdasd
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <% } %>
+    </div>
+
+  </body>
+
+  <script>
+    JsBarcode('.barcode').init();
+  </script>
+</html>

@@ -1,9 +1,8 @@
 import Employee from '@modules/employee/infra/typeorm/entities/Employee';
 import AppError from '@shared/errors/AppError';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { inject, injectable } from 'tsyringe';
-import IHashProvider from '@modules/employee/providers/HashProvider/models/IHashProvider';
 import IEmployeeRepository from '../repositories/IEmployeeRepository';
+import IHashProvider from '@modules/employee/providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   name: string;
@@ -15,13 +14,12 @@ interface IRequest {
 }
 
 @injectable()
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default class UpdateEmployeeService {
   constructor(
     @inject('EmployeeRepository')
     private employeesRepository: IEmployeeRepository,
     @inject('HashProvider')
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
   ) {}
 
   async execute({
@@ -38,7 +36,7 @@ export default class UpdateEmployeeService {
       throw new AppError(`Esse username: ${username} não existe`);
     }
 
-    if (typeof password !== 'undefined') {
+    if (typeof password != 'undefined'){
       const hashedPassword = await this.hashProvider.generateHash(password);
       Object.assign(employee, {
         name,
@@ -47,7 +45,7 @@ export default class UpdateEmployeeService {
         role,
         departament,
       });
-    } else {
+    }else{
       Object.assign(employee, {
         name,
         email,
@@ -55,6 +53,7 @@ export default class UpdateEmployeeService {
         departament,
       });
     }
+
 
     await this.employeesRepository.update(employee);
 

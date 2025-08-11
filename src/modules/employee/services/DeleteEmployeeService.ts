@@ -1,6 +1,5 @@
 import Employee from '@modules/employee/infra/typeorm/entities/Employee';
 import AppError from '@shared/errors/AppError';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { inject, injectable } from 'tsyringe';
 import IEmployeeRepository from '../repositories/IEmployeeRepository';
 
@@ -9,11 +8,10 @@ interface IRequest {
 }
 
 @injectable()
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default class DeleteEmployeeService {
   constructor(
     @inject('EmployeeRepository')
-    private employeesRepository: IEmployeeRepository
+    private employeesRepository: IEmployeeRepository,
   ) {}
 
   async execute({ username }: IRequest): Promise<Employee> {

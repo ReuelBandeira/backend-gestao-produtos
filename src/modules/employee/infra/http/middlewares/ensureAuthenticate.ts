@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
-// eslint-disable-next-line import/no-unresolved
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
 
@@ -19,7 +18,7 @@ interface SubjectObject {
 export default function ensureAuthenticated(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void {
   const authHeader = req.headers.authorization;
 
@@ -34,7 +33,7 @@ export default function ensureAuthenticated(
 
   const [type, token] = parts;
 
-  if (!/^IREDES$/i.test(type)) {
+  if (!/^GIGA$/i.test(type)) {
     throw new AppError('Token malformatted', 401);
   }
 
@@ -44,6 +43,7 @@ export default function ensureAuthenticated(
     const decoded = verify(token, secret);
 
     const { username, id } = decoded as TokenPayload;
+
 
     req.user = { username, id };
 
