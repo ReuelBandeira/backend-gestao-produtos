@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
 import EmployeeController from '@modules/employee/infra/http/controllers/EmployeeController';
-import ensureAuthenticated from '../middlewares/ensureAuthenticate';
 import PdfEmployeeController from '../controllers/PdfEmployeeController';
+import ensureAuthenticated from '../middlewares/ensureAuthenticate';
 
 const employeesRouter = Router();
 
@@ -11,6 +11,9 @@ const pdfEmployeeController = new PdfEmployeeController();
 
 employeesRouter.get('/render/employee', pdfEmployeeController.index);
 employeesRouter.get('/pdf/employee', pdfEmployeeController.create);
+
+// Rota pública para criar o primeiro usuário (quando não existir nenhum)
+employeesRouter.post('/first-user', employeeController.createFirstUser);
 
 employeesRouter.use(ensureAuthenticated);
 

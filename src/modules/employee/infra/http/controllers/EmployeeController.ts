@@ -3,6 +3,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateEmployeeService from '@modules/employee/services/CreateEmployeeService';
+import CreateFirstUserService from '@modules/employee/services/CreateFirstUserService';
 import DeleteEmployeeService from '@modules/employee/services/DeleteEmployeeService';
 import UpdateEmployeeService from '@modules/employee/services/UpdateEmployeeService';
 import AppError from '@shared/errors/AppError';
@@ -129,6 +130,37 @@ export default class EmployeesController {
       employees: employeesWithouPassword,
       totalPages,
       totalEmployees,
+    });
+  }
+
+  public async createFirstUser(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    const { name, username, email, password, role, departament, type_user } =
+      request.body;
+
+    if (type_user === 'ADMINISTRADOR' && email === '') {
+      throw new AppError('Favor preencha o campo de email', 404);
+    }
+
+    const createFirstUser = container.resolve(CreateFirstUserService);
+
+    const employee = await createFirstUser.execute({
+      name,
+      username,
+      email,
+      password,
+      role,
+      departament,
+    });
+
+    // @ts-expect-error
+    delete employee.password;
+
+    return response.status(201).json({
+      employee,
+      message: 'Primeiro usuário criado com sucesso!'
     });
   }
 
