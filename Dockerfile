@@ -1,27 +1,32 @@
-FROM node
+FROM node:20-alpine
+
 WORKDIR /usr/src/app
 
-# Copiar o código para o contêiner
-COPY . /usr/src/app
+# Instalar netcat para testar conexão
+RUN apk add --no-cache netcat-openbsd
 
-# Definir o fuso horário
-ENV TZ=America/Manaus
+# Copiar package files
+COPY package.json yarn.lock ./
 
-# Atualizar a lista de pacotes e instalar o netcat-openbsd
-RUN apt-get update && apt-get install -y netcat-openbsd
+# Instalar dependências
+RUN yarn install --frozen-lockfile
 
-# Instalar o Yarn globalmente, forçando a instalação para garantir a versão mais recente
-RUN npm install -g yarn@latest --force
+# Copiar código
+COPY . .
 
-# Instalar as dependências do projeto
-RUN yarn install
-
-# Adicionar ts-node
-RUN yarn add ts-node@latest
-
-# Expor a porta
+# Expor porta
 EXPOSE 3334
 
-# Comando para iniciar a aplicação
-CMD ["yarn", "dev"]
-
+# Script simples: aguarda porta + migrations + app
+CMD sh -c '\
+  echo "Aguardando MySQL na porta 3306..."; \
+  while ! nc -z $DB_HOST $DB_PORT; do \
+  echo "MySQL não está disponível - aguardando..."; \
+  sleep 2; \
+  done; \
+  echo "MySQL disponível! Aguardando 5s para estabilizar..."; \
+  sleep 5; \
+  echo "Executando migrations..."; \
+  yarn typeorm migration:run; \
+  echo "Iniciando aplicação..."; \
+  yarn dev'
